@@ -173,7 +173,7 @@ class RiddlePaper extends HTMLElement {
 
         .input-panel,
         .answer-panel {
-          min-height: 250px;
+          xmin-height: 250px;
           border-radius: 20px;
           border: 1px solid rgba(218, 165, 32, 0.45);
           background:
@@ -204,10 +204,11 @@ class RiddlePaper extends HTMLElement {
         }
 
         textarea {
-          width: 100%;
+          width: 90%;
           min-height: 190px;
           resize: vertical;
           border: 1px solid rgba(218, 165, 32, 0.55);
+          border: none;
           border-radius: 14px;
           background: #000;
           color: #f7e29d;
