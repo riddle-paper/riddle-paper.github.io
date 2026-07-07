@@ -30,10 +30,14 @@ const animationClasses = [
   'style-moon',
 ];
 
+const TRANSITION_DURATION_MS = 450;
+
 class RiddlePaper extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.lastAnswerIndex = -1;
+    this.lastAnimationIndex = -1;
   }
 
   connectedCallback() {
@@ -66,8 +70,13 @@ class RiddlePaper extends HTMLElement {
   }
 
   revealAnswer() {
-    const nextAnswer = answers[Math.floor(Math.random() * answers.length)];
-    const nextAnimation = animationClasses[Math.floor(Math.random() * animationClasses.length)];
+    const nextAnswerIndex = this.getRandomIndex(answers.length, this.lastAnswerIndex);
+    const nextAnimationIndex = this.getRandomIndex(animationClasses.length, this.lastAnimationIndex);
+    const nextAnswer = answers[nextAnswerIndex];
+    const nextAnimation = animationClasses[nextAnimationIndex];
+
+    this.lastAnswerIndex = nextAnswerIndex;
+    this.lastAnimationIndex = nextAnimationIndex;
 
     this.inputPanel.classList.add('is-leaving');
     this.button.disabled = true;
@@ -81,7 +90,7 @@ class RiddlePaper extends HTMLElement {
       this.form.dataset.state = 'answer';
       this.button.textContent = 'Again';
       this.button.disabled = false;
-    }, 450);
+    }, TRANSITION_DURATION_MS);
   }
 
   reset() {
@@ -166,7 +175,7 @@ class RiddlePaper extends HTMLElement {
           transition:
             opacity 0.45s ease,
             transform 0.45s ease,
-            filter 0.45s ease;
+            filter ${TRANSITION_DURATION_MS}ms ease;
         }
 
         .input-panel.is-leaving {
@@ -213,8 +222,8 @@ class RiddlePaper extends HTMLElement {
           opacity: 0;
           transform: scale(0.96);
           transition:
-            opacity 0.45s ease,
-            transform 0.45s ease;
+            opacity ${TRANSITION_DURATION_MS}ms ease,
+            transform ${TRANSITION_DURATION_MS}ms ease;
         }
 
         .answer-panel.is-visible {
@@ -421,11 +430,11 @@ class RiddlePaper extends HTMLElement {
         <form data-state="input">
           <div class="input-panel">
             <label for="prompt">Offer your words to the diary</label>
-            <textarea id="prompt" name="prompt" placeholder="I can make things move without touching them..." required></textarea>
+            <textarea id="prompt" name="prompt" placeholder="I can make things move without touching them..." aria-label="Write your riddle or text" required></textarea>
           </div>
 
           <div class="answer-panel" hidden>
-            <p class="answer-text" aria-live="polite"></p>
+            <p class="answer-text" aria-live="polite" aria-atomic="true"></p>
           </div>
 
           <div class="actions">
@@ -434,6 +443,20 @@ class RiddlePaper extends HTMLElement {
         </form>
       </section>
     `;
+  }
+
+  getRandomIndex(length, previousIndex) {
+    if (length < 2) {
+      return 0;
+    }
+
+    let index = Math.floor(Math.random() * length);
+
+    while (index === previousIndex) {
+      index = Math.floor(Math.random() * length);
+    }
+
+    return index;
   }
 }
 
