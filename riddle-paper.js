@@ -430,7 +430,7 @@ class RiddlePaper extends HTMLElement {
         <form data-state="input">
           <div class="input-panel">
             <label for="prompt">Offer your words to the diary</label>
-            <textarea id="prompt" name="prompt" placeholder="I can make things move without touching them..." aria-label="Write your riddle or text" required></textarea>
+            <textarea id="prompt" name="prompt" placeholder="I can make things move without touching them..." required></textarea>
           </div>
 
           <div class="answer-panel" hidden>
@@ -450,13 +450,12 @@ class RiddlePaper extends HTMLElement {
       return 0;
     }
 
-    let index = Math.floor(Math.random() * length);
-
-    while (index === previousIndex) {
-      index = Math.floor(Math.random() * length);
+    if (previousIndex < 0 || previousIndex >= length) {
+      return Math.floor(Math.random() * length);
     }
 
-    return index;
+    const offset = Math.floor(Math.random() * (length - 1)) + 1;
+    return (previousIndex + offset) % length;
   }
 }
 
