@@ -108,6 +108,16 @@ class RiddlePaper extends HTMLElement {
   render() {
     this.shadowRoot.innerHTML = `
       <style>
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+        }
+
+        [hidden] {
+          display: none !important;
+        }
+
         :host {
           width: min(100%, 760px);
           display: block;
