@@ -143,7 +143,7 @@ class RiddlePaper extends HTMLElement {
         }
 
         .title {
-          font-size: clamp(2rem, 4vw, 3.25rem);
+          font-size: clamp(2rem, 4vw, 3rem);
           letter-spacing: 0.08em;
           text-transform: uppercase;
           color: #f8e7a3;
