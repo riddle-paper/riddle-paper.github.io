@@ -1,2 +1,3 @@
 # riddle-paper.github.io
-&lt;riddle-paper> Web Component
+
+`<riddle-paper>` Web Component with a Tom Riddle diary theme.
